@@ -12,6 +12,14 @@ contract TestSupplyChain {
     // buyItem
 
     // test for failure if user does not send enough funds
+    function testUserDoesNotSendEnoughFunds() public {
+        bool r = true;
+        SupplyChain sc = SupplyChain(DeployedAddresses.SupplyChain());
+
+        sc.addItem("Item Name", 10 wei);
+        (r, ) = address(sc).call.value(1 wei)(abi.encodeWithSignature("buyItem(uint)", 0));
+        Assert.isFalse(r, "Buyer will get item even if he didn't paid");
+    }
     // test for purchasing an item that is not for Sale
 
     // shipItem
